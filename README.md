@@ -2,12 +2,12 @@
 
 # BUsiness Problem - Develop a model to optimize product pricing
 
--- Define the business problem to ascertain major issues to solve
--- Collect data from reliable sources
--- Conduct Exploratory data analysis(EDA) to ascertain data structure.
--- Buid Model
--- Evaluate model
--- Deploy model on render, aws, or google cloud.
+- Define the business problem to ascertain major issues to solve
+- Collect data from reliable sources
+- Conduct Exploratory data analysis(EDA) to ascertain data structure.
+- Buid Model
+- Evaluate model
+- Deploy model on render, aws, or google cloud.
 
 
 
