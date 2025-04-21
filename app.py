@@ -1,47 +1,37 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request, render_template
 import pandas as pd
-import joblib
-import logging
+import pickle
+import os
 
-# Initialize app
 app = Flask(__name__)
-logging.basicConfig(level=logging.INFO)
+model_path = os.path.join(os.getcwd(), 'model.pkl')
 
-# Load model and product dataset
-try:
-    model = joblib.load("model.pkl")
-    product_data = pd.read_csv("product.csv")
-    app.logger.info("Model and product data loaded successfully.")
-except Exception as e:
-    app.logger.error(f"Error loading model or data: {e}")
-    model = None
-    product_data = None
+# Load model
+with open(model_path, 'rb') as f:
+    model = pickle.load(f)
 
-@app.route("/")
+@app.route('/')
 def home():
-    return jsonify({"message": "Welcome to the Pricing Optimization API!"})
+    return render_template('index.html')
 
-@app.route("/products", methods=["GET"])
-def get_products():
-    if product_data is not None:
-        sample = product_data.head(10).to_dict(orient="records")
-        return jsonify(sample)
-    return jsonify({"error": "Product data not loaded"}), 500
-
-@app.route("/predict", methods=["POST"])
+@app.route('/predict', methods=['POST'])
 def predict():
-    if model is None:
-        return jsonify({"error": "Model not loaded"}), 500
-
     try:
-        input_data = request.get_json()
-        input_df = pd.DataFrame([input_data])
+        data = {
+            'Current_Price': float(request.form['Current_Price']),
+            'Competitor_Price': float(request.form['Competitor_Price']),
+            'Customer_Satisfaction': float(request.form['Customer_Satisfaction']),
+            'Elasticity_Score': float(request.form['Elasticity_Score']),
+            'Marketing_Spend': float(request.form['Marketing_Spend']),
+            'Category_Electronics': int(request.form.get('Category_Electronics', 0)),
+            'Customer_Segment_Premium': int(request.form.get('Customer_Segment_Premium', 0)),
+            'Season_Summer': int(request.form.get('Season_Summer', 0))
+        }
+        input_df = pd.DataFrame([data])
         prediction = model.predict(input_df)[0]
-        app.logger.info(f"Prediction made for input: {input_data}")
-        return jsonify({"predicted_price": prediction})
+        return render_template("index.html", prediction=f"Predicted Units Sold: {int(prediction)}")
     except Exception as e:
-        app.logger.error(f"Prediction error: {e}")
-        return jsonify({"error": str(e)}), 400
+        return render_template("index.html", prediction=f"Error: {str(e)}")
 
-if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
