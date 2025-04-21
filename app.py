@@ -1,37 +1,46 @@
 from flask import Flask, request, render_template
 import pandas as pd
 import pickle
-import os
 
+# Initialize app
 app = Flask(__name__)
-model_path = os.path.join(os.getcwd(), 'model.pkl')
 
-# Load model
-with open(model_path, 'rb') as f:
+# Load model and expected features
+with open("model.pkl", "rb") as f:
     model = pickle.load(f)
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+expected_features = pd.read_csv("expected_features.csv", header=None)[0].tolist()
 
-@app.route('/predict', methods=['POST'])
+@app.route("/", methods=["GET", "POST"])
 def predict():
-    try:
-        data = {
-            'Current_Price': float(request.form['Current_Price']),
-            'Competitor_Price': float(request.form['Competitor_Price']),
-            'Customer_Satisfaction': float(request.form['Customer_Satisfaction']),
-            'Elasticity_Score': float(request.form['Elasticity_Score']),
-            'Marketing_Spend': float(request.form['Marketing_Spend']),
-            'Category_Electronics': int(request.form.get('Category_Electronics', 0)),
-            'Customer_Segment_Premium': int(request.form.get('Customer_Segment_Premium', 0)),
-            'Season_Summer': int(request.form.get('Season_Summer', 0))
+    if request.method == "POST":
+        # Collect user input
+        user_input = {
+            "Current_Price": float(request.form["Current_Price"]),
+            "Competitor_Price": float(request.form["Competitor_Price"]),
+            "Customer_Satisfaction": float(request.form["Customer_Satisfaction"]),
+            "Elasticity_Score": float(request.form["Elasticity_Score"]),
+            "Marketing_Spend": float(request.form["Marketing_Spend"]),
+            "Category": request.form["Category"],
+            "Customer_Segment": request.form["Customer_Segment"],
+            "Season": request.form["Season"]
         }
-        input_df = pd.DataFrame([data])
-        prediction = model.predict(input_df)[0]
-        return render_template("index.html", prediction=f"Predicted Units Sold: {int(prediction)}")
-    except Exception as e:
-        return render_template("index.html", prediction=f"Error: {str(e)}")
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+        # Convert to DataFrame
+        input_df = pd.DataFrame([user_input])
+
+        # One-hot encode categorical features
+        input_encoded = pd.get_dummies(input_df)
+
+        # Align columns with training time
+        input_encoded = input_encoded.reindex(columns=expected_features, fill_value=0)
+
+        # Predict
+        prediction = model.predict(input_encoded)[0]
+
+        return render_template("result.html", prediction=round(prediction, 2))
+
+    return render_template("form.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
