@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Units Sold Prediction</title>
+</head>
+<body>
+    <h2>Predict Units Sold</h2>
+    <form method="POST" action="/predict">
+        <label>Current Price:</label>
+        <input type="number" step="0.01" name="Current_Price" required><br>
+
+        <label>Competitor Price:</label>
+        <input type="number" step="0.01" name="Competitor_Price" required><br>
+
+        <label>Customer Satisfaction (0–10):</label>
+        <input type="number" step="0.1" name="Customer_Satisfaction" required><br>
+
+        <label>Elasticity Score:</label>
+        <input type="number" step="0.1" name="Elasticity_Score" required><br>
+
+        <label>Marketing Spend:</label>
+        <input type="number" step="0.01" name="Marketing_Spend" required><br><br>
+
+        <label>Category:</label><br>
+        <input type="radio" name="Category_Electronics" value="1"> Electronics<br>
+        <input type="radio" name="Category_Electronics" value="0" checked> Other<br><br>
+
+        <label>Customer Segment:</label><br>
+        <input type="radio" name="Customer_Segment_Premium" value="1"> Premium<br>
+        <input type="radio" name="Customer_Segment_Premium" value="0" checked> Standard<br><br>
+
+        <label>Season:</label><br>
+        <input type="radio" name="Season_Summer" value="1"> Summer<br>
+        <input type="radio" name="Season_Summer" value="0" checked> Other<br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction %}
+        <h3>{{ prediction }}</h3>
+    {% endif %}
+</body>
+</html>
