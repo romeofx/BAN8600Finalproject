@@ -1,46 +1,40 @@
-from flask import Flask, request, render_template
+from flask import Flask, render_template, request
 import pandas as pd
-import pickle
+import joblib
 
-# Initialize app
 app = Flask(__name__)
 
-# Load model and expected features
-with open("model.pkl", "rb") as f:
-    model = pickle.load(f)
+# Load the trained model and expected feature columns
+model_pipeline = joblib.load("model_pipeline.pkl")
+expected_features = pd.read_csv("expected_features.csv", header=None)[0]
 
-expected_features = pd.read_csv("expected_features.csv", header=None)[0].tolist()
+@app.route("/")
+def home():
+    return render_template("index.html")
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/predict", methods=["POST"])
 def predict():
-    if request.method == "POST":
-        # Collect user input
-        user_input = {
-            "Current_Price": float(request.form["Current_Price"]),
-            "Competitor_Price": float(request.form["Competitor_Price"]),
-            "Customer_Satisfaction": float(request.form["Customer_Satisfaction"]),
-            "Elasticity_Score": float(request.form["Elasticity_Score"]),
-            "Marketing_Spend": float(request.form["Marketing_Spend"]),
-            "Category": request.form["Category"],
-            "Customer_Segment": request.form["Customer_Segment"],
-            "Season": request.form["Season"]
+    try:
+        input_data = {
+            "Current_Price": float(request.form["current_price"]),
+            "Competitor_Price": float(request.form["competitor_price"]),
+            "Customer_Satisfaction": float(request.form["customer_satisfaction"]),
+            "Elasticity_Score": float(request.form["elasticity_score"]),
+            "Marketing_Spend": float(request.form["marketing_spend"]),
+            "Category": request.form["category"],
+            "Customer_Segment": request.form["customer_segment"],
+            "Season": request.form["season"]
         }
 
-        # Convert to DataFrame
-        input_df = pd.DataFrame([user_input])
+        input_df = pd.DataFrame([input_data])
+        encoded_input = pd.get_dummies(input_df)
+        encoded_input = encoded_input.reindex(columns=expected_features, fill_value=0)
 
-        # One-hot encode categorical features
-        input_encoded = pd.get_dummies(input_df)
+        prediction = model_pipeline.predict(encoded_input)[0]
+        return render_template("index.html", prediction=round(prediction, 2))
 
-        # Align columns with training time
-        input_encoded = input_encoded.reindex(columns=expected_features, fill_value=0)
-
-        # Predict
-        prediction = model.predict(input_encoded)[0]
-
-        return render_template("result.html", prediction=round(prediction, 2))
-
-    return render_template("form.html")
+    except Exception as e:
+        return render_template("index.html", prediction="Error: " + str(e))
 
 if __name__ == "__main__":
     app.run(debug=True)
