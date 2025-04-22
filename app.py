@@ -4,10 +4,10 @@ import joblib
 
 app = Flask(__name__)
 
-# Load the trained model pipeline (already includes preprocessing)
 model_pipeline = joblib.load("model_pipeline.pkl")
+expected_features = pd.read_csv("expected_features.csv", header=None)[0]
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def home():
     return render_template("index.html")
 
@@ -25,9 +25,11 @@ def predict():
             "Season": request.form["season"]
         }
 
-        input_df = pd.DataFrame([input_data])
-        # ⚠️ DO NOT get_dummies — the model_pipeline already preprocesses the input
-        prediction = model_pipeline.predict(input_df)[0]
+        df = pd.DataFrame([input_data])
+        encoded = pd.get_dummies(df)
+        encoded = encoded.reindex(columns=expected_features, fill_value=0)
+
+        prediction = model_pipeline.predict(encoded)[0]
         return render_template("index.html", prediction=round(prediction, 2))
 
     except Exception as e:

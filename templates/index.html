@@ -2,39 +2,46 @@
 <html>
 <head>
     <title>Pricing Optimizer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h2>Enter Product Details</h2>
-    <form method="POST" action="/predict">
-        <input type="number" step="any" name="current_price" placeholder="Current Price" required><br>
-        <input type="number" step="any" name="competitor_price" placeholder="Competitor Price" required><br>
-        <input type="number" step="any" name="customer_satisfaction" placeholder="Customer Satisfaction (0-10)" required><br>
-        <input type="number" step="any" name="elasticity_score" placeholder="Elasticity Score" required><br>
-        <input type="number" step="any" name="marketing_spend" placeholder="Marketing Spend" required><br>
+    <div class="overlay">
+        <div class="container">
+            <h2>Enter Product Details</h2>
+            <form method="POST" action="/predict">
+                <input type="number" step="any" name="current_price" placeholder="Current Price" required>
+                <input type="number" step="any" name="competitor_price" placeholder="Competitor Price" required>
+                <input type="number" step="any" name="customer_satisfaction" placeholder="Customer Satisfaction (0-10)" required>
+                <input type="number" step="any" name="elasticity_score" placeholder="Elasticity Score" required>
+                <input type="number" step="any" name="marketing_spend" placeholder="Marketing Spend" required>
 
-        <label>Category:</label>
-        <select name="category" required>
-            <option value="Electronics">Electronics</option>
-            <option value="Other">Other</option>
-        </select><br>
+                <select name="category" required>
+                    <option value="">Select Category</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Other">Other</option>
+                </select>
 
-        <label>Customer Segment:</label>
-        <select name="customer_segment" required>
-            <option value="Premium">Premium</option>
-            <option value="Standard">Standard</option>
-        </select><br>
+                <select name="customer_segment" required>
+                    <option value="">Select Segment</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Standard">Standard</option>
+                </select>
 
-        <label>Season:</label>
-        <select name="season" required>
-            <option value="Summer">Summer</option>
-            <option value="Other">Other</option>
-        </select><br>
+                <select name="season" required>
+                    <option value="">Select Season</option>
+                    <option value="Summer">Summer</option>
+                    <option value="Other">Other</option>
+                </select>
 
-        <button type="submit">Predict Units Sold</button>
-    </form>
+                <button type="submit">Predict Units Sold</button>
+            </form>
 
-    {% if prediction %}
-        <h3>Predicted Units Sold: {{ prediction }}</h3>
-    {% endif %}
+            {% if prediction %}
+                <div class="result">
+                    <h3>Predicted Units Sold: {{ prediction }}</h3>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>
