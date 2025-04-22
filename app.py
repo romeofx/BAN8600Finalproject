@@ -14,7 +14,7 @@ def home():
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
-            input_data = {
+        input_data = {
             "Current_Price": float(request.form["current_price"]),
             "Competitor_Price": float(request.form["competitor_price"]),
             "Customer_Satisfaction": float(request.form["customer_satisfaction"]),
