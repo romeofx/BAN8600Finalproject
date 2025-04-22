@@ -52,3 +52,24 @@ form button:hover {
     font-size: 20px;
     color: #333;
 }
+
+/* === Responsive Enhancements === */
+
+@media (max-height: 700px) {
+    .overlay {
+        align-items: flex-start;
+        padding-top: 40px;
+        height: auto;
+    }
+
+    .container {
+        margin: 20px 0;
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+}
