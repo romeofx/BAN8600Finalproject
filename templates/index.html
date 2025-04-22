@@ -9,39 +9,35 @@
         <div class="container">
             <h2>Enter Product Details</h2>
             <form method="POST" action="/predict">
-                <input type="number" step="any" name="current_price" placeholder="Current Price" required>
-                <input type="number" step="any" name="competitor_price" placeholder="Competitor Price" required>
-                <input type="number" step="any" name="customer_satisfaction" placeholder="Customer Satisfaction (0-10)" required>
-                <input type="number" step="any" name="elasticity_score" placeholder="Elasticity Score" required>
-                <input type="number" step="any" name="marketing_spend" placeholder="Marketing Spend" required>
-
+                <input type="number" step="any" name="current_price" placeholder="Current Price" required><br>
+                <input type="number" step="any" name="competitor_price" placeholder="Competitor Price" required><br>
+                <input type="number" step="any" name="customer_satisfaction" placeholder="Customer Satisfaction (0-10)" required><br>
+                <input type="number" step="any" name="elasticity_score" placeholder="Elasticity Score" required><br>
+                <input type="number" step="any" name="marketing_spend" placeholder="Marketing Spend" required><br>
+        
+                <label>Category:</label>
                 <select name="category" required>
-                    <option value="">Select Category</option>
                     <option value="Electronics">Electronics</option>
                     <option value="Other">Other</option>
-                </select>
-
+                </select><br>
+        
+                <label>Customer Segment:</label>
                 <select name="customer_segment" required>
-                    <option value="">Select Segment</option>
                     <option value="Premium">Premium</option>
                     <option value="Standard">Standard</option>
-                </select>
-
+                </select><br>
+        
+                <label>Season:</label>
                 <select name="season" required>
-                    <option value="">Select Season</option>
                     <option value="Summer">Summer</option>
                     <option value="Other">Other</option>
-                </select>
-
+                </select><br>
+        
                 <button type="submit">Predict Units Sold</button>
             </form>
-
+        
             {% if prediction %}
-                <div class="result">
-                    <h3>Predicted Units Sold: {{ prediction }}</h3>
-                </div>
+                <h3>Predicted Units Sold: {{ prediction }}</h3>
             {% endif %}
-        </div>
-    </div>
-</body>
-</html>
+        </body>
+        </html>

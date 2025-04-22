@@ -14,7 +14,7 @@ def home():
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
-        input_data = {
+            input_data = {
             "Current_Price": float(request.form["current_price"]),
             "Competitor_Price": float(request.form["competitor_price"]),
             "Customer_Satisfaction": float(request.form["customer_satisfaction"]),
@@ -25,11 +25,9 @@ def predict():
             "Season": request.form["season"]
         }
 
-        df = pd.DataFrame([input_data])
-        encoded = pd.get_dummies(df)
-        encoded = encoded.reindex(columns=expected_features, fill_value=0)
-
-        prediction = model_pipeline.predict(encoded)[0]
+        input_df = pd.DataFrame([input_data])
+        # ⚠️ DO NOT get_dummies — the model_pipeline already preprocesses the input
+        prediction = model_pipeline.predict(input_df)[0]
         return render_template("index.html", prediction=round(prediction, 2))
 
     except Exception as e:
