@@ -4,9 +4,8 @@ import joblib
 
 app = Flask(__name__)
 
-# Load the trained model and expected feature columns
+# Load model pipeline (which includes preprocessing)
 model_pipeline = joblib.load("model_pipeline.pkl")
-expected_features = pd.read_csv("expected_features.csv", header=None)[0]
 
 @app.route("/")
 def home():
@@ -16,21 +15,21 @@ def home():
 def predict():
     try:
         input_data = {
-            "Current_Price": float(request.form["current_price"]),
-            "Competitor_Price": float(request.form["competitor_price"]),
-            "Customer_Satisfaction": float(request.form["customer_satisfaction"]),
-            "Elasticity_Score": float(request.form["elasticity_score"]),
-            "Marketing_Spend": float(request.form["marketing_spend"]),
-            "Category": request.form["category"],
-            "Customer_Segment": request.form["customer_segment"],
-            "Season": request.form["season"]
+            "Current_Price": float(request.form["Current_Price"]),
+            "Competitor_Price": float(request.form["Competitor_Price"]),
+            "Customer_Satisfaction": float(request.form["Customer_Satisfaction"]),
+            "Elasticity_Score": float(request.form["Elasticity_Score"]),
+            "Marketing_Spend": float(request.form["Marketing_Spend"]),
+            "Category": request.form["Category"],
+            "Customer_Segment": request.form["Customer_Segment"],
+            "Season": request.form["Season"]
         }
 
+        # Turn into DataFrame (no encoding, let the pipeline handle it)
         input_df = pd.DataFrame([input_data])
-        encoded_input = pd.get_dummies(input_df)
-        encoded_input = encoded_input.reindex(columns=expected_features, fill_value=0)
 
-        prediction = model_pipeline.predict(encoded_input)[0]
+        # Predict using full pipeline
+        prediction = model_pipeline.predict(input_df)[0]
         return render_template("index.html", prediction=round(prediction, 2))
 
     except Exception as e:
