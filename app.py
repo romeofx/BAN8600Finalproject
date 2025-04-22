@@ -4,8 +4,9 @@ import joblib
 
 app = Flask(__name__)
 
-# Load model pipeline (which includes preprocessing)
+# Load trained model and expected features
 model_pipeline = joblib.load("model_pipeline.pkl")
+expected_features = pd.read_csv("expected_features.csv", header=None)[0]
 
 @app.route("/")
 def home():
@@ -14,22 +15,23 @@ def home():
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
+        # Collect inputs using the exact field names
         input_data = {
-            "Current_Price": float(request.form["Current_Price"]),
-            "Competitor_Price": float(request.form["Competitor_Price"]),
-            "Customer_Satisfaction": float(request.form["Customer_Satisfaction"]),
-            "Elasticity_Score": float(request.form["Elasticity_Score"]),
-            "Marketing_Spend": float(request.form["Marketing_Spend"]),
-            "Category": request.form["Category"],
-            "Customer_Segment": request.form["Customer_Segment"],
-            "Season": request.form["Season"]
+            "Current_Price": float(request.form.get("Current_Price")),
+            "Competitor_Price": float(request.form.get("Competitor_Price")),
+            "Customer_Satisfaction": float(request.form.get("Customer_Satisfaction")),
+            "Elasticity_Score": float(request.form.get("Elasticity_Score")),
+            "Marketing_Spend": float(request.form.get("Marketing_Spend")),
+            "Category": request.form.get("Category"),
+            "Customer_Segment": request.form.get("Customer_Segment"),
+            "Season": request.form.get("Season")
         }
 
-        # Turn into DataFrame (no encoding, let the pipeline handle it)
         input_df = pd.DataFrame([input_data])
+        encoded_input = pd.get_dummies(input_df)
+        encoded_input = encoded_input.reindex(columns=expected_features, fill_value=0)
 
-        # Predict using full pipeline
-        prediction = model_pipeline.predict(input_df)[0]
+        prediction = model_pipeline.predict(encoded_input)[0]
         return render_template("index.html", prediction=round(prediction, 2))
 
     except Exception as e:

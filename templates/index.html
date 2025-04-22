@@ -6,28 +6,28 @@
 <body>
     <h2>Enter Product Details</h2>
     <form method="post" action="/predict">
-        <input type="text" name="current_price" placeholder="Current Price"><br>
-        <input type="text" name="competitor_price" placeholder="Competitor Price"><br>
-        <input type="text" name="customer_satisfaction" placeholder="Customer Satisfaction (0-10)"><br>
-        <input type="text" name="elasticity_score" placeholder="Elasticity Score"><br>
-        <input type="text" name="marketing_spend" placeholder="Marketing Spend"><br>
+        <input type="number" name="Current_Price" placeholder="Current Price" step="any" required><br>
+        <input type="number" name="Competitor_Price" placeholder="Competitor Price" step="any" required><br>
+        <input type="number" name="Customer_Satisfaction" placeholder="Customer Satisfaction (0-10)" step="any" required><br>
+        <input type="number" name="Elasticity_Score" placeholder="Elasticity Score" step="any" required><br>
+        <input type="number" name="Marketing_Spend" placeholder="Marketing Spend" step="any" required><br>
 
         <label>Category:</label>
-        <select name="category">
-            <option>Electronics</option>
-            <option>Other</option>
+        <select name="Category" required>
+            <option value="Electronics">Electronics</option>
+            <option value="Other">Other</option>
         </select><br>
 
         <label>Customer Segment:</label>
-        <select name="customer_segment">
-            <option>Premium</option>
-            <option>Standard</option>
+        <select name="Customer_Segment" required>
+            <option value="Premium">Premium</option>
+            <option value="Standard">Standard</option>
         </select><br>
 
         <label>Season:</label>
-        <select name="season">
-            <option>Summer</option>
-            <option>Other</option>
+        <select name="Season" required>
+            <option value="Summer">Summer</option>
+            <option value="Other">Other</option>
         </select><br>
 
         <button type="submit">Predict Units Sold</button>
