@@ -10,17 +10,17 @@ body {
     background-color: rgba(0, 0, 0, 0.6);
     min-height: 100vh;
     display: flex;
-    justify-content: flex-start; /* move form to left */
+    justify-content: flex-start; /* move to the left */
     align-items: center;
-    padding: 40px 60px;
+    padding: 40px 40px; /* more horizontal padding */
     box-sizing: border-box;
 }
 
 .content {
     width: 100%;
-    max-width: 620px; /* increased width */
+    max-width: 600px; /* increased width */
     background: white;
-    padding: 70px 40px; /* increased height */
+    padding: 40px 35px; /* increased padding (height) */
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
     text-align: center;
@@ -32,7 +32,7 @@ form button {
     display: block;
     width: 100%;
     margin: 10px 0;
-    padding: 14px;
+    padding: 14px; /* slightly taller inputs */
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 16px;
@@ -69,26 +69,6 @@ footer {
     margin-top: 30px;
     color: red;
     font-size: 14px;
-    font-weight: bold;
-}
-
-.result-card {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: #e6f7ff;
-    border-left: 5px solid #1d72b8;
-    border-radius: 8px;
-}
-
-.result-number {
-    font-size: 32px;
-    font-weight: bold;
-    color: #1d72b8;
-}
-
-.error-message {
-    margin-top: 20px;
-    color: red;
     font-weight: bold;
 }
 
