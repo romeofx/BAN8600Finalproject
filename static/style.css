@@ -48,14 +48,14 @@ form button {
 }
 
 form button:hover {
-    background-color: #155a91;
+    background-color: #15913e;
 }
 
 .welcome-title {
     font-size: 28px;
     margin-bottom: 20px;
     font-weight: bold;
-    color: #ffffff;
+    color: #1d72b8;
 }
 
 .brand-name {
@@ -67,7 +67,7 @@ form button:hover {
 
 footer {
     margin-top: 30px;
-    color: red;
+    color: rgb(255, 0, 85);
     font-size: 14px;
     font-weight: bold;
 }
