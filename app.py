@@ -28,7 +28,7 @@ def predict():
         input_df = pd.DataFrame([input_data])
         # ⚠️ DO NOT get_dummies — the model_pipeline already preprocesses the input
         prediction = model_pipeline.predict(input_df)[0]
-        return render_template("index.html", prediction=round(prediction, 2))
+        return render_template("index.html", prediction=round(prediction,))
 
     except Exception as e:
         return render_template("index.html", prediction=f"Error: {str(e)}")
