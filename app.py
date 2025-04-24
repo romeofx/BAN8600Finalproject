@@ -4,7 +4,10 @@ import joblib
 
 app = Flask(__name__)
 
+# Load the trained model pipeline
 model_pipeline = joblib.load("model_pipeline.pkl")
+
+# Load expected features (if needed for debugging)
 expected_features = pd.read_csv("expected_features.csv", header=None)[0]
 
 @app.route("/", methods=["GET"])
@@ -14,6 +17,7 @@ def home():
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
+        # Collect input data from form
         input_data = {
             "Current_Price": float(request.form["current_price"]),
             "Competitor_Price": float(request.form["competitor_price"]),
@@ -25,18 +29,18 @@ def predict():
             "Season": request.form["season"]
         }
 
-        # Input validation
-        if not (0 <= input_data["Customer_Satisfaction"] <= 10):
-            raise ValueError("Customer Satisfaction must be between 0 and 10.")
-
-        if input_data["Current_Price"] < 0 or input_data["Competitor_Price"] < 0 or input_data["Marketing_Spend"] < 0:
-            raise ValueError("Prices and Marketing Spend must be non-negative.")
-
+        # Convert to DataFrame
         input_df = pd.DataFrame([input_data])
+
+        # Predict using pipeline (assumes model handles all preprocessing)
         prediction = model_pipeline.predict(input_df)[0]
+
+        # Return result to user
         return render_template("index.html", prediction=round(prediction))
 
-    except ValueError as ve:
-        return render_template("index.html", prediction=f"Input Error: {str(ve)}")
     except Exception as e:
-        return render_template("index.html", prediction="An unexpected error occurred. Please try again later.")
+        # Show the actual error message in the UI for debugging
+        return render_template("index.html", prediction=f"Unexpected Error: {str(e)}")
+
+if __name__ == "__main__":
+    app.run(debug=True)
