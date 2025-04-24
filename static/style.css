@@ -18,12 +18,12 @@ body {
 
 .content {
     width: 100%;
-    max-width: 700px;
+    max-width: 560px;
     background: white;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    text-align: left;
+    text-align: center;
 }
 
 form input,
@@ -48,7 +48,7 @@ form button {
 }
 
 form button:hover {
-    background-color: #15911d;
+    background-color: #155a91;
 }
 
 .welcome-title {
@@ -67,7 +67,7 @@ form button:hover {
 
 footer {
     margin-top: 30px;
-    color: rgb(208, 0, 255);
+    color: red;
     font-size: 14px;
     font-weight: bold;
 }
