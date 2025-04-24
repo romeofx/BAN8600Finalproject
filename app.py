@@ -25,13 +25,18 @@ def predict():
             "Season": request.form["season"]
         }
 
+        # Input validation
+        if not (0 <= input_data["Customer_Satisfaction"] <= 10):
+            raise ValueError("Customer Satisfaction must be between 0 and 10.")
+
+        if input_data["Current_Price"] < 0 or input_data["Competitor_Price"] < 0 or input_data["Marketing_Spend"] < 0:
+            raise ValueError("Prices and Marketing Spend must be non-negative.")
+
         input_df = pd.DataFrame([input_data])
-        # ⚠️ DO NOT get_dummies — the model_pipeline already preprocesses the input
         prediction = model_pipeline.predict(input_df)[0]
-        return render_template("index.html", prediction=round(prediction,))
+        return render_template("index.html", prediction=round(prediction))
 
+    except ValueError as ve:
+        return render_template("index.html", prediction=f"Input Error: {str(ve)}")
     except Exception as e:
-        return render_template("index.html", prediction=f"Error: {str(e)}")
-
-if __name__ == "__main__":
-    app.run(debug=True)
+        return render_template("index.html", prediction="An unexpected error occurred. Please try again later.")
