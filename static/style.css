@@ -10,17 +10,17 @@ body {
     background-color: rgba(0, 0, 0, 0.6);
     min-height: 100vh;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* move to the left */
     align-items: center;
-    padding: 40px 10px;
+    padding: 40px 40px; /* more horizontal padding */
     box-sizing: border-box;
 }
 
 .content {
     width: 100%;
-    max-width: 560px;
+    max-width: 600px; /* increased width */
     background: white;
-    padding: 30px;
+    padding: 40px 35px; /* increased padding (height) */
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
     text-align: center;
@@ -32,7 +32,7 @@ form button {
     display: block;
     width: 100%;
     margin: 10px 0;
-    padding: 12px;
+    padding: 14px; /* slightly taller inputs */
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 16px;
@@ -74,8 +74,13 @@ footer {
 
 /* Responsive Enhancements */
 @media (max-width: 500px) {
+    .overlay {
+        justify-content: center;
+        padding: 20px;
+    }
+
     .content {
         width: 90%;
-        padding: 20px;
+        padding: 25px;
     }
 }
