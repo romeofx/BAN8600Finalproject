@@ -17,8 +17,8 @@ body {
 }
 
 .content {
-    width: 100%;
-    max-width: 600px; /* increased width */
+    width: 90%;
+    max-width: 450px; /* increased width */
     background: white;
     padding: 40px 35px; /* increased padding (height) */
     border-radius: 12px;
