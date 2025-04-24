@@ -1,55 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Pricing Optimizer</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
     <div class="overlay">
         <div class="content">
-            <h1 class="welcome-title">Welcome to <span class="brand-name">Optimizer</span></h1>
+            <h1 class="title">Welcome to <span>Optimizer</span></h1>
 
-            <h2>Enter Product Details</h2>
-            <form method="POST" action="/predict">
-                <input type="number" step="any" name="current_price" placeholder="Current Price" required><br>
-                <input type="number" step="any" name="competitor_price" placeholder="Competitor Price" required><br>
-                <input type="number" step="any" name="customer_satisfaction" placeholder="Customer Satisfaction (0-10)" required><br>
-                <input type="number" step="any" name="elasticity_score" placeholder="Elasticity Score" required><br>
-                <input type="number" step="any" name="marketing_spend" placeholder="Marketing Spend" required><br>
+            <div class="form-container">
+                <h2>Enter Product Details</h2>
+                <form method="POST" action="/predict">
+                    <input type="number" step="any" name="current_price" placeholder="Current Price" required>
+                    <input type="number" step="any" name="competitor_price" placeholder="Competitor Price" required>
+                    <input type="number" step="any" name="customer_satisfaction" placeholder="Customer Satisfaction (0-10)" required>
+                    <input type="number" step="any" name="elasticity_score" placeholder="Elasticity Score" required>
+                    <input type="number" step="any" name="marketing_spend" placeholder="Marketing Spend" required>
 
-                <label>Category:</label>
-                <select name="category" required>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Apparel">Apparel</option>
-                    <option value="Home">Home</option>
-                    <option value="Toys">Toys</option>
-                    <option value="Beauty">Beauty</option>
-                </select><br>
+                    <label>Category:</label>
+                    <select name="category" required>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Apparel">Apparel</option>
+                        <option value="Home">Home</option>
+                        <option value="Toys">Toys</option>
+                        <option value="Beauty">Beauty</option>
+                    </select>
 
-                <label>Customer Segment:</label>
-                <select name="customer_segment" required>
-                    <option value="Premium">Premium</option>
-                    <option value="Midrange">Midrange</option>
-                    <option value="Budget">Budget</option>
-                </select><br>
+                    <label>Customer Segment:</label>
+                    <select name="customer_segment" required>
+                        <option value="Premium">Premium</option>
+                        <option value="Midrange">Midrange</option>
+                        <option value="Budget">Budget</option>
+                    </select>
 
-                <label>Season:</label>
-                <select name="season" required>
-                    <option value="Summer">Summer</option>
-                    <option value="Fall">Fall</option>
-                    <option value="Spring">Spring</option>
-                    <option value="Winter">Winter</option>
-                </select><br>
+                    <label>Season:</label>
+                    <select name="season" required>
+                        <option value="Summer">Summer</option>
+                        <option value="Fall">Fall</option>
+                        <option value="Spring">Spring</option>
+                        <option value="Winter">Winter</option>
+                    </select>
 
-                <button type="submit">Predict Units Sold</button>
-            </form>
+                    <button type="submit">Predict Units Sold</button>
+                </form>
 
-            {% if prediction %}
-                <h3>Predicted Units Sold: {{ prediction }}</h3>
-            {% endif %}
+                {% if prediction %}
+                    <h3 class="result">Predicted Units Sold: {{ prediction }}</h3>
+                {% endif %}
+            </div>
 
-            <footer>© 2025 All rights reserved by <strong>Calistus Chukwuebuka Ndubuisi</strong></footer>
+            <footer>
+                &copy; 2025 All rights reserved by <strong>Calistus Chukwuebuka Ndubuisi</strong>
+            </footer>
         </div>
     </div>
 </body>
 </html>
+
