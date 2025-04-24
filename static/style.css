@@ -12,28 +12,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px 10px;
+    padding: 40px 10px;
+    box-sizing: border-box;
 }
 
 .content {
     width: 100%;
-    max-width: 480px;
+    max-width: 560px;
     background: white;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
     text-align: center;
-}
-
-.title {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: white;
-}
-
-.title span {
-    color: #1d72b8;
 }
 
 form input,
@@ -53,22 +43,39 @@ form button {
     color: white;
     border: none;
     cursor: pointer;
-    transition: background 0.3s ease-in-out;
     font-weight: bold;
+    transition: background 0.3s;
 }
 
 form button:hover {
     background-color: #155a91;
 }
 
-.result {
-    margin-top: 20px;
-    font-size: 20px;
-    color: #333;
+.welcome-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.brand-name {
+    color: #1d72b8;
+    background-color: #ffffff;
+    padding: 2px 6px;
+    border-radius: 4px;
 }
 
 footer {
     margin-top: 30px;
-    color: #eee;
-    font-size: 13px;
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 500px) {
+    .content {
+        width: 90%;
+        padding: 20px;
+    }
 }
