@@ -17,30 +17,28 @@ def home():
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
-        # Collect input data from form
         input_data = {
             "Current_Price": float(request.form["current_price"]),
             "Competitor_Price": float(request.form["competitor_price"]),
             "Customer_Satisfaction": float(request.form["customer_satisfaction"]),
             "Elasticity_Score": float(request.form["elasticity_score"]),
             "Marketing_Spend": float(request.form["marketing_spend"]),
-            "Category": request.form["category"],
-            "Customer_Segment": request.form["customer_segment"],
-            "Season": request.form["season"]
+            "Category": str(request.form["category"]),
+            "Customer_Segment": str(request.form["customer_segment"]),
+            "Season": str(request.form["season"])
         }
 
-        # Convert to DataFrame
         input_df = pd.DataFrame([input_data])
 
-        # Predict using pipeline (assumes model handles all preprocessing)
+        print("Input DataFrame for prediction:")
+        print(input_df)
+
         prediction = model_pipeline.predict(input_df)[0]
 
-        # Return result to user
         return render_template("index.html", prediction=round(prediction))
 
     except Exception as e:
-        # Show the actual error message in the UI for debugging
+        import traceback
+        error_msg = traceback.format_exc()
+        print(error_msg)
         return render_template("index.html", prediction=f"Unexpected Error: {str(e)}")
-
-if __name__ == "__main__":
-    app.run(debug=True)
