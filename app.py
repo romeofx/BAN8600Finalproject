@@ -4,10 +4,7 @@ import joblib
 
 app = Flask(__name__)
 
-# Load the trained model pipeline
 model_pipeline = joblib.load("model_pipeline.pkl")
-
-# Load expected features (if needed for debugging)
 expected_features = pd.read_csv("expected_features.csv", header=None)[0]
 
 @app.route("/", methods=["GET"])
@@ -23,22 +20,17 @@ def predict():
             "Customer_Satisfaction": float(request.form["customer_satisfaction"]),
             "Elasticity_Score": float(request.form["elasticity_score"]),
             "Marketing_Spend": float(request.form["marketing_spend"]),
-            "Category": str(request.form["category"]),
-            "Customer_Segment": str(request.form["customer_segment"]),
-            "Season": str(request.form["season"])
+            "Category": request.form["category"],
+            "Customer_Segment": request.form["customer_segment"],
+            "Season": request.form["season"]
         }
 
         input_df = pd.DataFrame([input_data])
-
-        print("Input DataFrame for prediction:")
-        print(input_df)
-
         prediction = model_pipeline.predict(input_df)[0]
-
         return render_template("index.html", prediction=round(prediction))
 
     except Exception as e:
-        import traceback
-        error_msg = traceback.format_exc()
-        print(error_msg)
-        return render_template("index.html", prediction=f"Unexpected Error: {str(e)}")
+        return render_template("index.html", prediction=f"Error: {str(e)}")
+
+if __name__ == "__main__":
+    app.run(debug=True)
